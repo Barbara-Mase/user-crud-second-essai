@@ -1,0 +1,39 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Créer un User | {{ parent() }} {% endblock %}
+
+{% block main %}
+    <main class="container py-5">
+        <h1 class="mb-3">Créer un utilisateur</h1>
+        <form method="post" action="index.php?route=check-create-user">
+            {% if errors %}
+                {% for error in errors %}
+                    <div class="alert alert-danger mb-3" role="alert">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <p class="form-text">Tous les champs sont obligatoires</p>
+            <fieldset class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control" required />
+            </fieldset>
+            <fieldset class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" name="password" id="password" class="form-control" required/>
+            </fieldset>
+            <fieldset class="mb-3">
+                <label for="first_name" class="form-label">Prénom</label>
+                <input type="text" name="first_name" id="first_name" class="form-control" required/>
+            </fieldset>
+            <fieldset class="mb-3">
+                <label for="last_name" class="form-label">Nom</label>
+                <input type="text" name="last_name" id="last_name" class="form-control" required/>
+            </fieldset>
+            <fieldset class="mb-3">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </fieldset>
+        </form>
+    </main>
+{% endblock %}
+

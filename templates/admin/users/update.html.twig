@@ -1,0 +1,47 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Modifier un User | {{ parent() }} {% endblock %}
+
+{% block main %}
+    <main class="container py-5">
+        <h1 class="mb-3">Modifier un utilisateur</h1>
+        {% if user %}
+            <form method="post" action="index.php?route=check-update-user&id={{ user.id }}">
+                {% if errors %}
+                    {% for error in errors %}
+                        <div class="alert alert-danger mb-3" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <p class="form-text">Tous les champs sont obligatoires</p>
+                <fieldset class="mb-3">
+                    <label for="id" class="form-label">Id</label>
+                    <input type="number" name="id" id="id" class="form-control" value="{{ user.id }}" required readonly/>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" value="{{ user.email }}" required />
+                </fieldset>
+                <fieldset class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" name="password" id="password" class="form-control" value="{{ user.password }}" required/>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <label for="first_name" class="form-label">Prénom</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control" value="{{ user.firstName }}" required/>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <label for="last_name" class="form-label">Nom</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control" value="{{ user.lastName }}" required/>
+                </fieldset>
+                <fieldset class="mb-3">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </fieldset>
+            </form>
+        {% else %}
+            <p>Utilisateur introuvable</p>
+        {% endif %}
+    </main>
+{% endblock %}
+

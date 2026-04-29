@@ -1,0 +1,41 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Liste des Users | {{ parent() }} {% endblock %}
+
+{% block main %}
+    <main class="container py-5">
+        <h1 class="mb-3">Liste des utilisateurs</h1>
+
+        <a href="index.php?route=create-user" class="my-3 btn btn-primary">Ajouter un utilisateur</a>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>
+                        <a href="index.php?route=details-user&id={{ user.id }}" class="btn btn-primary mx-1">Détails</a>
+                        <a href="index.php?route=update-user&id={{ user.id }}" class="btn btn-success mx-1">Modifier</a>
+                        <a href="index.php?route=delete-user&id={{ user.id }}" class="btn btn-danger mx-1">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+    </main>
+{% endblock %}
+
