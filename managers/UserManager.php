@@ -78,14 +78,29 @@ class UserManager extends AbstractManager
 
         $query->execute($parameters);
 
-        if($this->db->lastInsertId())
+        if($this->db->lastInsertId()) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public function update(User $user) : bool {
-        $query = $this->db->prepare
+
+        $query = $this->db->prepare('UPDATE users SET email = :email, password = :password, first_name = :first_name, last_name = :last_name WHERE id = :id');
+
+        $parameters = [
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName()
+        ];
+
+        $query->execute($parameters);
+
+        return true;
+
     }
 
     public function delete(int $id) : bool {

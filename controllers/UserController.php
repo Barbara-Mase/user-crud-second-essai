@@ -54,7 +54,37 @@ class UserController extends AbstractController
 
     public function checkUpdate(int $id): void
     {
-        echo "UserController::checkUpdate<br>";
+        $_SESSION["errors"] = [];
+
+        $um = new UserManager();
+
+        if (!empty($_POST["email"]) && !empty($_POST["password"]) && !empty($_POST["first_name"]) && !empty($_POST["last_name"])) {
+
+            // Vérifier si l'email appartient déjà à un autre utilisateur
+            $existingUser = $um->findByEmail($_POST["email"]);
+
+            if ($existingUser === null || $existingUser->getId() === $id) {
+                $user = new User($_POST["email"], $_POST["password"], $_POST["first_name"], $_POST["last_name"]);
+                $user->setId($id); // ← manquait dans ta version !
+
+                $ret = $um->update($user);
+
+                if ($ret) {
+                    unset($_SESSION["errors"]);
+                    header("Location: index.php?route=list-users");
+                } else {
+                    $_SESSION["errors"][] = "La mise à jour a échoué lors de l'écriture dans la base de données.";
+                    header("Location: index.php?route=update-user&id=$id");
+                }
+            } else {
+                $_SESSION["errors"][] = "Un utilisateur avec cet email existe déjà.";
+                header("Location: index.php?route=update-user&id=$id");
+            }
+
+        } else {
+            $_SESSION["errors"][] = "Au moins un champ obligatoire est manquant.";
+            header("Location: index.php?route=update-user&id=$id");
+        }
     }
 
     public function create(): void
