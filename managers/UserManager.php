@@ -6,26 +6,20 @@ class UserManager extends AbstractManager
     {
         parent::__construct();
     }
-
     public function findAll(): array
     {
         $query = $this->db->prepare('SELECT * FROM users');
         $parameters = [];
         $query->execute($parameters);
-
         $results = $query->fetchAll(PDO::FETCH_ASSOC);
-
         $users = [];
         foreach ($results as $result) {
             $user = new User($result['email'], $result['password'], $result['first_name'], $result['last_name'], $result['id']);
 
             $users[] = $user;
         }
-
         return $users;
     }
-
-
     public function findOne(int $id): ?User
     {
         $query = $this->db->prepare('SELECT * FROM users WHERE id = :id');
@@ -33,9 +27,7 @@ class UserManager extends AbstractManager
             ':id' => $id
         ];
         $query->execute($parameters);
-
         $result = $query->fetch(PDO::FETCH_ASSOC);
-
         if ($result) {
             $user = new User($result['email'], $result['password'], $result['first_name'], $result['last_name'], $result['id']);
             return $user;
@@ -43,52 +35,38 @@ class UserManager extends AbstractManager
             return null;
         }
     }
-
-
     public function findByEmail(string $email): ?User
     {
         $query = $this->db->prepare('SELECT * FROM users WHERE email = :email');
         $parameters = [
-            ':email' => $email
+            'email' => $email
         ];
         $query->execute($parameters);
-
         $result = $query->fetch(PDO::FETCH_ASSOC);
-
         if ($result) {
             $user = new User($result['email'], $result['password'], $result['first_name'], $result['last_name'], $result['id']);
             return $user;
         } else {
             return null;
         }
-
     }
-
-
     public function create(User $user) : bool {
-
         $query = $this->db->prepare("INSERT INTO users (id, email, password, first_name, last_name) VALUES (NULL, :email, :password, :first_name, :last_name)");
-
         $parameters = [
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
             'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName()
         ];
-
         $query->execute($parameters);
-
         if($this->db->lastInsertId()) {
             return true;
         } else {
             return false;
         }
     }
-
     public function update(User $user) : bool {
-
         $query = $this->db->prepare('UPDATE users SET email = :email, password = :password, first_name = :first_name, last_name = :last_name WHERE id = :id');
-
         $parameters = [
             'id' => $user->getId(),
             'email' => $user->getEmail(),
@@ -96,13 +74,9 @@ class UserManager extends AbstractManager
             'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName()
         ];
-
         $query->execute($parameters);
-
         return true;
-
     }
-
     public function delete(int $id) : bool {
         $query = $this->db->prepare("DELETE FROM users WHERE id = :id");
         $parameters = [
@@ -111,7 +85,5 @@ class UserManager extends AbstractManager
         $query->execute($parameters);
         return true;
     }
-
-
 }
 
