@@ -3,7 +3,11 @@
 
 class User
 {
-    public function __construct(private string $email, private string $password, private string $firstName, private string $lastName, private ?int $id = null)
+    public function __construct(private string $email,
+                                private string $password,
+                                private string $firstName,
+                                private string $lastName,
+                                private ?int $id = null)
     {
     }
     public function getEmail(): string
